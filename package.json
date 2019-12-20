@@ -1,5 +1,5 @@
 {
-  "name": "@shprink/wc-snake-game",
+  "name": "wc-snake-game",
   "author": "Julien Renaux",
   "version": "0.1.0",
   "description": "Web Component Snake Game made with StencilJS",

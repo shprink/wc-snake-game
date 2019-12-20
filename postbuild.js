@@ -25,6 +25,10 @@ async function run() {
       path.join(PACKAGE_ROOT, "LICENSE"),
       path.join(DIST_PATH, "LICENSE")
     );
+    await fs.copy(
+      path.join(PACKAGE_ROOT, "readme.md"),
+      path.join(DIST_PATH, "readme.md")
+    );
 
     console.info("package.json and License updated");
   } catch (error) {
