@@ -25,7 +25,7 @@ jobs:
           npm run build
           cat ./dist/package.json
       - uses: primer/publish@master
+        args: "--dir=dist"
         env:
           GITHUB_TOKEN: $GITHUB_TOKEN
           NPM_AUTH_TOKEN: $NPM_TOKEN
-          args: "--dir=dist"
