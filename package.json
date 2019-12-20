@@ -1,6 +1,7 @@
 {
-  "name": "wc-snake-game",
-  "version": "0.0.1",
+  "name": "@shprink/wc-snake-game",
+  "author": "Julien Renaux",
+  "version": "0.1.0",
   "description": "Web Component Snake Game made with StencilJS",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -16,7 +17,7 @@
   ],
   "scripts": {
     "build": "stencil build --docs",
-    "postbuild": "node ./scripts/postbuild.js --patch $(git rev-list --count HEAD)",
+    "postbuild": "node ./postbuild.js --patch $(git rev-list --count HEAD)",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",

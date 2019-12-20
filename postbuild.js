@@ -5,14 +5,14 @@ const path = require("path"),
   fs = require("fs-extra");
 
 const options = minimist(process.argv.slice(2));
-const PACKAGE_ROOT = path.join(__dirname, "..");
+const PACKAGE_ROOT = __dirname;
 const DIST_PATH = path.join(PACKAGE_ROOT, "dist");
 
 async function run() {
   try {
     const patch = options.patch || 0;
     const { version, license, name, description } = await fs.readJson(
-      path.join(PACKAGE_ROOT, "package.json")
+      path.join(__dirname, "package.json")
     );
 
     await fs.outputJson(path.join(DIST_PATH, "package.json"), {
