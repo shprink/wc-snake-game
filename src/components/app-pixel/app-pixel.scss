@@ -1,0 +1,21 @@
+:host {
+  display: block;
+
+  & > div {
+    width: 25px;
+    height: 25px;
+    background-position: center;
+    background-size: cover;
+    transition: background-color 300ms ease;
+
+    &.type-✪ {
+      background-color: var(--apple-color, yellow);
+    }
+    &.type-█ {
+      background-color: var(--snake-color, #404040);
+    }
+    &.type-░ {
+      background-color: var(--board-color, #799e53);
+    }
+  }
+}
