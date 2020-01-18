@@ -21,22 +21,19 @@
 
 ## Dependencies
 
-### Used by
-
- - [wc-snake-game]()
- - [wc-snake-game-worker](../app-game-worker)
-
 ### Depends on
 
-- [wc-snake-game]()
+- [wc-snake-game](../app-game)
 - [app-pixel](../app-pixel)
 
 ### Graph
 ```mermaid
 graph TD;
-  wc-snake-game --> wc-snake-game
   wc-snake-game-worker --> wc-snake-game
-  style wc-snake-game fill:#f9f,stroke:#333,stroke-width:4px
+  wc-snake-game-worker --> app-pixel
+  wc-snake-game --> wc-snake-game
+  wc-snake-game --> app-pixel
+  style wc-snake-game-worker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

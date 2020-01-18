@@ -1,6 +1,5 @@
 import { Component, h, Prop } from "@stencil/core";
-
-import { IPixelTypes } from "../app-game/engine";
+import { IPixelTypes } from "../model";
 
 @Component({
   tag: "app-pixel",

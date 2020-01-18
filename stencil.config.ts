@@ -4,6 +4,7 @@ import { sass } from "@stencil/sass";
 export const config: Config = {
   namespace: "wc-snake-game",
   plugins: [sass()],
+  copy: [{ src: "engine.worker.js" }],
   outputTargets: [
     {
       type: "dist",

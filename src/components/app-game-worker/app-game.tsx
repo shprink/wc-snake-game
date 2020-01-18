@@ -7,10 +7,24 @@ import {
   Event,
   EventEmitter
 } from "@stencil/core";
-import { IPixelTypes, IGameSizes, Game, GameState } from "./engine";
+import { GameState, IPixelTypes, IGameSizes } from "../model";
+
+// enum GameState {
+//   IDLE = "IDLE",
+//   RUNNING = "RUNNING",
+//   OVER = "OVER",
+//   WON = "WON"
+// }
+
+// type IGameSizes = 10 | 20 | 50 | 100;
+// enum IPixelTypes {
+//   "VOID" = "░",
+//   "TAIL" = "█",
+//   "APPLE" = "✪"
+// }
 
 @Component({
-  tag: "wc-snake-game",
+  tag: "wc-snake-game-worker",
   styleUrls: ["app-game.scss"],
   shadow: true
 })
@@ -23,34 +37,32 @@ export class AppGame {
     score: number;
     state: GameState;
   }>;
-  game: Game;
+  worker: Worker;
   gameDiv: HTMLDivElement;
 
   @Listen("keydown") handleKeyDown(ev: KeyboardEvent) {
-    this.game.userInput(ev.key);
+    this.worker.postMessage(["keydown", ev.key]);
   }
   @Listen("focus") handleFocus() {
-    this.game.start();
+    this.worker.postMessage(["start"]);
   }
   componentWillLoad() {
-    this.game = new Game(
-      this.size,
-      grid => (this.grid = grid),
-      (state: GameState) => {
-        this.gameState = state;
-        this.change.emit({
-          state,
-          score: this.score
-        });
-      },
-      (score: number) => {
-        this.score = score;
+    this.worker = new Worker("./engine.worker.js");
+    this.worker.postMessage(["init", this.size]);
+    this.worker.onmessage = e => {
+      // console.log("onmessage", e.data);
+      const { state, grid, score } = e.data;
+      grid && (this.grid = grid);
+      score && (this.score = score);
+      state && (this.gameState = state);
+      if (state || score) {
         this.change.emit({
           state: this.gameState,
-          score
+          score: this.score
         });
       }
-    );
+      this.render();
+    };
   }
   play = (ev: Event) => {
     ev.preventDefault();
@@ -58,10 +70,9 @@ export class AppGame {
   };
   restart = (ev: Event) => {
     ev.preventDefault();
-    this.game.restart();
+    this.worker.postMessage(["restart"]);
   };
   render() {
-    console.log("this.grid", this.grid);
     if (!this.size)
       return (
         <p>

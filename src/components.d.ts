@@ -8,9 +8,13 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  GameState as GameState1,
+  IGameSizes as IGameSizes1,
+  IPixelTypes,
+} from './components/model';
+import {
   GameState,
   IGameSizes,
-  IPixelTypes,
 } from './components/app-game/engine';
 
 export namespace Components {
@@ -18,6 +22,9 @@ export namespace Components {
     'type': IPixelTypes;
   }
   interface WcSnakeGame {
+    'size': IGameSizes;
+  }
+  interface WcSnakeGameWorker {
     'size': IGameSizes;
   }
 }
@@ -36,9 +43,16 @@ declare global {
     prototype: HTMLWcSnakeGameElement;
     new (): HTMLWcSnakeGameElement;
   };
+
+  interface HTMLWcSnakeGameWorkerElement extends Components.WcSnakeGameWorker, HTMLStencilElement {}
+  var HTMLWcSnakeGameWorkerElement: {
+    prototype: HTMLWcSnakeGameWorkerElement;
+    new (): HTMLWcSnakeGameWorkerElement;
+  };
   interface HTMLElementTagNameMap {
     'app-pixel': HTMLAppPixelElement;
     'wc-snake-game': HTMLWcSnakeGameElement;
+    'wc-snake-game-worker': HTMLWcSnakeGameWorkerElement;
   }
 }
 
@@ -53,10 +67,18 @@ declare namespace LocalJSX {
     }>) => void;
     'size'?: IGameSizes;
   }
+  interface WcSnakeGameWorker {
+    'onChange'?: (event: CustomEvent<{
+      score: number;
+      state: GameState;
+    }>) => void;
+    'size'?: IGameSizes;
+  }
 
   interface IntrinsicElements {
     'app-pixel': AppPixel;
     'wc-snake-game': WcSnakeGame;
+    'wc-snake-game-worker': WcSnakeGameWorker;
   }
 }
 
@@ -68,6 +90,7 @@ declare module "@stencil/core" {
     interface IntrinsicElements {
       'app-pixel': LocalJSX.AppPixel & JSXBase.HTMLAttributes<HTMLAppPixelElement>;
       'wc-snake-game': LocalJSX.WcSnakeGame & JSXBase.HTMLAttributes<HTMLWcSnakeGameElement>;
+      'wc-snake-game-worker': LocalJSX.WcSnakeGameWorker & JSXBase.HTMLAttributes<HTMLWcSnakeGameWorkerElement>;
     }
   }
 }
