@@ -8,6 +8,7 @@ import {
   EventEmitter
 } from "@stencil/core";
 import { GameState, IPixelTypes, IGameSizes } from "../model";
+import { keydown, restart, start, init } from './engine.worker';
 
 // enum GameState {
 //   IDLE = "IDLE",
@@ -41,28 +42,27 @@ export class AppGame {
   gameDiv: HTMLDivElement;
 
   @Listen("keydown") handleKeyDown(ev: KeyboardEvent) {
-    this.worker.postMessage(["keydown", ev.key]);
+    keydown(ev.key);
   }
   @Listen("focus") handleFocus() {
-    this.worker.postMessage(["start"]);
+    start()
   }
-  componentWillLoad() {
-    this.worker = new Worker("./engine.worker.js");
-    this.worker.postMessage(["init", this.size]);
-    this.worker.onmessage = e => {
-      // console.log("onmessage", e.data);
-      const { state, grid, score } = e.data;
-      grid && (this.grid = grid);
-      score && (this.score = score);
-      state && (this.gameState = state);
-      if (state || score) {
-        this.change.emit({
-          state: this.gameState,
-          score: this.score
-        });
+  async componentWillLoad() {
+    await init(
+      this.size,
+      (grid) => {
+        console.log('onGridChange', grid);
+        this.grid = grid;
+      },
+      (gameState) => {
+        console.log('onStateChange', gameState);
+        this.gameState = gameState;
+      },
+      (score) => {
+        console.log('onScoreChange', score);
+        this.score = score;
       }
-      this.render();
-    };
+    );
   }
   play = (ev: Event) => {
     ev.preventDefault();
@@ -70,7 +70,7 @@ export class AppGame {
   };
   restart = (ev: Event) => {
     ev.preventDefault();
-    this.worker.postMessage(["restart"]);
+    restart();
   };
   render() {
     if (!this.size)
