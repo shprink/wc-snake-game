@@ -29,9 +29,9 @@
     "@stencil/sass": "^1.1.1",
     "fs-extra": "^8.1.0",
     "minimist": "^1.2.0",
-    "ts-loader": "^6.2.1",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "license": "MIT",
   "dependencies": {
